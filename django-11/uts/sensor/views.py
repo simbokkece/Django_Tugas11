@@ -23,6 +23,17 @@ def index(request):
     jantung_sys = Sensor.objects.get(name="jantung_sys")
     jantung_dia = Sensor.objects.get(name="jantung_dia")
 
+    paru_alarm = 'media/green.jpg'
+    lambung_alarm = 'media/green.jpg'
+    jantung_alarm = 'media/green.jpg'
+
+    if int(paru_oxy.value) <= 80 or 450 > int(paru_tid.value) > 750 or int(paru_cap.value) < 3500:
+        paru_alarm = 'media/red.jpg'
+    if float(lambung_acid.value) <= 3 or 30 > int(lambung_vol.value) > 90 or 45 < int(lambung_temp.value) < 35:
+        lambung_alarm = 'media/red.jpg'
+    if int(jantung_bpm.value) < 55 or 80 > int(jantung_sys.value) > 120 or 45 > int(jantung_dia.value) > 90:
+        jantung_alarm = 'media/red.jpg'
+
     context = {
         'paru_oxy': str(paru_oxy.value),
         'paru_tid': str(paru_tid.value),
@@ -34,7 +45,11 @@ def index(request):
 
         'jantung_bpm': str(jantung_bpm.value),
         'jantung_sys': str(jantung_sys.value),
-        'jantung_dia': str(jantung_dia.value)
+        'jantung_dia': str(jantung_dia.value),
+
+        'paru_alarm' : str(paru_alarm),
+        'lambung_alarm' : str(lambung_alarm),
+        'jantung_alarm' : str(jantung_alarm)
     }
 
     return render(request, 'index.html', context)
